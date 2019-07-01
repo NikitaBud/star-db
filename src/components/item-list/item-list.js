@@ -6,7 +6,7 @@ import SwapiService from '../../services/swapi-service';
 
 export default class ItemList extends Component {
 
-    swapiService = new SwapiService;
+    swapiService = new SwapiService();
 
     state = {
         peopleList: null
@@ -23,7 +23,7 @@ export default class ItemList extends Component {
     }
 
     renderItems(arr) {
-        return arr.map((id, name) => {
+        return arr.map(({id, name}) => {
             return (
                 <li className="list-group-item"
                     key={id}
@@ -34,6 +34,9 @@ export default class ItemList extends Component {
         });
     }
 
+    
+    
+
     render() {
 
         const { peopleList } = this.state;
@@ -41,7 +44,6 @@ export default class ItemList extends Component {
         if (!peopleList) {
             return <Spinner />;
         }
-
         const items = this.renderItems(peopleList);
 
         return (
