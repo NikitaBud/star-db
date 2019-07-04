@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import './person-details.css';
 import SwapiService from '../../services/swapi-service';
+import Spinner from '../spinner/spinner';
 
 export default class PersonDetails extends Component {
 
@@ -29,7 +30,9 @@ export default class PersonDetails extends Component {
     this.swapiService
       .getPerson(personId)
       .then((person) => {
-        this.setState({ person });
+        this.setState({ 
+          person
+       });
       })
   }
 
