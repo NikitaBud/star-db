@@ -1,0 +1,17 @@
+.error-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.error-indicator img {
+    padding-bottom: 20px;
+    width: 100px;
+    fill:  rgb(168, 71, 15);
+}
+
+.error-indicator span {
+    color: rgb(168, 71, 15);
+    padding-bottom: 5px;
+}
