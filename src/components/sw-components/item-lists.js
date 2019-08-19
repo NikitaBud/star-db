@@ -1,42 +1,53 @@
 import React from 'react';
 import ItemList from '../item-list';
-import { withData } from '../hoc-helpers';
-import SwapiService from '../../services/swapi-service';
+import {
+    withData,
+    withSwapiService,
+    withChildFunction,
+    compose } from '../hoc-helpers';
 
-const swapiService = new SwapiService();
 
-const {
-    getAllPeople,
-    getAllStarships,
-    getAllPlanets
-} = swapiService;
-
-const withChildFunction = (Wrapped, fn) => {
-    return (props) => {
-        return (
-            <Wrapped {...props}>
-                {fn}
-            </Wrapped>
-        )
-    }
-};
 
 const renderName = ({ name }) => <span>{name}</span>;
-const renderModelAndName =({ model, name }) => <span>{name} ({model})</span>
+const renderModelAndName =({ model, name }) => <span>{name} ({model})</span>;
+
+const mapPersonMethodsToPorops = (swapiService) => {
+    return {
+        getData: swapiService.getAllPeople
+    };
+};
+
+const mapPlanetMethodsToPorops = (swapiService) => {
+    return {
+        getData: swapiService.getAllPlanets
+    };
+};
+
+const mapStarshipMethodsToPorops = (swapiService) => {
+    return {
+        getData: swapiService.getAllStarships
+    };
+};
 
 withChildFunction(ItemList, renderName);
 
-const PersonList = withData(
-                        withChildFunction(ItemList, renderName),
-                        getAllPeople);
+const PersonList = compose(
+                        withSwapiService(mapPersonMethodsToPorops),
+                        withData,
+                        withChildFunction(renderName)
+                    )(ItemList);
 
-const PlanetList = withData(
-                        withChildFunction(ItemList, renderName),
-                        getAllPlanets);
+const PlanetList = compose(
+                        withSwapiService(mapPlanetMethodsToPorops),
+                        withData,
+                        withChildFunction(renderName)
+                    )(ItemList);
 
-const StarshipList = withData(
-                        withChildFunction(ItemList, renderModelAndName),
-                        getAllStarships);
+const StarshipList = compose(
+                        withSwapiService(mapStarshipMethodsToPorops),
+                        withData,
+                        withChildFunction(renderModelAndName)
+                    )(ItemList);
 
 export {
     PersonList,
